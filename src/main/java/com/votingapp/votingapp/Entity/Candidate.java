@@ -14,7 +14,6 @@ public class Candidate {
     }
 
     @Id
-    @GeneratedValue
     private Long id;
     private String name;
     @Column(unique = true)

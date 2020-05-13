@@ -29,11 +29,13 @@ public class VoterController {
     }
 
     @PostMapping("/vote")
-    public void voteForCandidate(@RequestBody Voter voter) {
+    public ResponseEntity voteForCandidate(@RequestBody Voter voter) {
         try {
             voterService.vote(voter);
+            return ResponseEntity.ok("Thank you for voting!");
         } catch (Exception e) {
-            // check if candidate exists
+            // if candidate does not exist, this exception will be displayed
+            // if voter has already voted, this exception will be displayed
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage());
         }

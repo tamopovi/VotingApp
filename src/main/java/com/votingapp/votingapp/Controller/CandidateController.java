@@ -21,6 +21,7 @@ public class CandidateController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Candidate>> getCandidates() {
         return ResponseEntity.ok(candidateService.getAllCandidates());
+
     }
 
     @GetMapping("/get/{id}")
@@ -30,13 +31,15 @@ public class CandidateController {
     }
 
     @PostMapping("/createCandidate")
-    public void createCandidate(@RequestBody Candidate candidate) {
+    public ResponseEntity createCandidate(@RequestBody Candidate candidate) {
         try {
             candidateService.createCandidate(candidate);
+            return ResponseEntity.ok(candidateService.getCandidate(candidate.getId()));
         } catch (Exception e) {
             // might be the case that a candidate with this list number already exists
+            // or that a candidate with the same id is trying to be created
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Unique number in list constraint violated.");
+                    HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }

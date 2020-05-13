@@ -23,7 +23,11 @@ public class CandidateService {
         return candidateRepository.findById(id);
     }
 
-    public void createCandidate(Candidate candidate) {
+    public void createCandidate(Candidate candidate) throws Exception {
+        if (candidateRepository.findById(candidate.getId()).isPresent())
+            throw new Exception("Candidate with provided ID already exists!");
+        if (candidateRepository.findByNumberInList(candidate.getNumberInList()) != null)
+            throw new Exception("Candidate with provided number in list already exists!");
             candidateRepository.save(candidate);
     }
 }
